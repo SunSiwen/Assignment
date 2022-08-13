@@ -1,6 +1,8 @@
 package util;
 
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.PixelFormat;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritablePixelFormat;
@@ -10,8 +12,9 @@ import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
-import java.io.File;
+import java.io.*;
 import java.nio.IntBuffer;
+import java.util.Scanner;
 
 
 /**
@@ -23,28 +26,20 @@ public class FileUtil {
     private FileUtil() {
     }
 
-    //设置图标
     public static Canvas getFileIconToNode(File file) {
 
-        //获取系统文件的图标
         Image image = ((ImageIcon) FileSystemView.getFileSystemView()
                 .getSystemIcon(file)).getImage();
-        //构建图片缓冲区，设定图片缓冲区的大小和背景，背景为透明
         BufferedImage bi = new BufferedImage(image.getWidth(null),
                 image.getHeight(null), Transparency.BITMASK);
-        bi.getGraphics().drawImage(image, 0, 0, null);          //把图片画到图片缓冲区
-        //将图片缓冲区的数据转换成int型数组
+        bi.getGraphics().drawImage(image, 0, 0, null);
         int[] data = ((DataBufferInt) bi.getData().getDataBuffer()).getData();
-        //获得写像素的格式模版
         WritablePixelFormat<IntBuffer> pixelFormat
                 = PixelFormat.getIntArgbInstance();
-        Canvas canvas = new Canvas(bi.getWidth() + 2.0, bi.getHeight() + 2.0);    //新建javafx的画布
-        //获取像素的写入器
+        Canvas canvas = new Canvas(bi.getWidth() + 2.0, bi.getHeight() + 2.0);
         PixelWriter pixelWriter = canvas.getGraphicsContext2D().getPixelWriter();
-        //根据写像素的格式模版把int型数组写到画布
         pixelWriter.setPixels(1, 1, bi.getWidth(), bi.getHeight(),
                 pixelFormat, data, 0, bi.getWidth());
-        //设置树节点的图标
         return canvas;
 
     }
@@ -54,4 +49,34 @@ public class FileUtil {
     }
 
 
+    public static String readFile(File file) {
+        if (file != null) {
+            try (Scanner scanner = new Scanner(file)) {
+                StringBuilder stringBuilder = new StringBuilder();
+                while (scanner.hasNext()) {
+                    stringBuilder.append(scanner.nextLine()).append("\r\n");
+                }
+                return stringBuilder.toString();
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
+                return "Fail to find this File";
+            }
+        } else {
+            return "Fail to open this file";
+        }
+    }
+
+
+    public static void saveFileByTab(Tab finalTab) {
+        try (BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(finalTab.getId()))) {
+            byte[] b = (((TextArea) (finalTab.getContent())).getText()).getBytes();
+            out.write(b, 0, b.length);
+            String text = finalTab.getText();
+            if (text.endsWith("*")) {
+                finalTab.setText(text.substring(0, text.length() - 1));
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
 }
