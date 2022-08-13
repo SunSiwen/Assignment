@@ -26,6 +26,13 @@ public class FileUtil {
     private FileUtil() {
     }
 
+    /**
+     * 
+     * @author Siwen Sun
+     * @date 2022/8/13 13:07
+     * @param file 
+     * @return javafx.scene.canvas.Canvas
+     */
     public static Canvas getFileIconToNode(File file) {
 
         Image image = ((ImageIcon) FileSystemView.getFileSystemView()
@@ -44,11 +51,24 @@ public class FileUtil {
 
     }
 
+    /**
+     * 
+     * @author Siwen Sun
+     * @date 2022/8/13 13:07
+     * @param file 
+     * @return java.lang.String
+     */
     public static String getFileName(File file) {
         return FileSystemView.getFileSystemView().getSystemDisplayName(file);
     }
 
-
+    /**
+     * 
+     * @author Siwen Sun
+     * @date 2022/8/13 13:07
+     * @param file 
+     * @return java.lang.String
+     */
     public static String readFile(File file) {
         if (file != null) {
             try (Scanner scanner = new Scanner(file)) {
@@ -67,6 +87,12 @@ public class FileUtil {
     }
 
 
+    /**
+     * 
+     * @author Siwen Sun
+     * @date 2022/8/13 13:07
+     * @param finalTab 
+     */
     public static void saveFileByTab(Tab finalTab) {
         try (BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(finalTab.getId()))) {
             byte[] b = (((TextArea) (finalTab.getContent())).getText()).getBytes();

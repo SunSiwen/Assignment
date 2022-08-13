@@ -15,7 +15,6 @@ import java.util.function.Function;
  */
 public class FileTreeItem extends TreeItem<FileItem> {
 
-    //判断树节点是否被初始化，没有初始化为真
     private boolean notInitialized = true;
 
     private final File file;
@@ -35,6 +34,13 @@ public class FileTreeItem extends TreeItem<FileItem> {
         };
     }
 
+    /**
+     * @param file
+     * @param supplier
+     * @return null
+     * @author Siwen Sun
+     * @date 2022/8/13 13:06
+     */
     public FileTreeItem(File file, Function<File, File[]> supplier) {
         super(new FileItem(file), FileUtil.getFileIconToNode(file));
         this.file = file;
@@ -42,23 +48,18 @@ public class FileTreeItem extends TreeItem<FileItem> {
     }
 
 
-    //重写getchildren方法，让节点被展开时加载子目录
+    /**
+     * @return javafx.collections.ObservableList<javafx.scene.control.TreeItem < entities.FileItem>>
+     * @author Siwen Sun
+     * @date 2022/8/13 13:06
+     */
     @Override
     public ObservableList<TreeItem<FileItem>> getChildren() {
-
         ObservableList<TreeItem<FileItem>> children = super.getChildren();
-        //没有加载子目录时，则加载子目录作为树节点的孩子
         if (this.notInitialized && this.isExpanded()) {
-
-            this.notInitialized = false;    //设置没有初始化为假
-
-            /*判断树节点的文件是否是目录，
-             *如果是目录，着把目录里面的所有的文件目录添加入树节点的孩子中。
-             */
-
+            this.notInitialized = false;
             if (this.getFile().isDirectory() && null != supplier.apply(this.getFile())) {
                 for (File f : supplier.apply(this.getFile())) {
-                    //如果文件是目录，则把它加到树节点上
                     if (f.isDirectory() || ".txt".equals(f.getName().substring(Math.max(0, f.getName().indexOf('.'))))) {
                         children.add(new FileTreeItem(f));
                     }
@@ -69,15 +70,20 @@ public class FileTreeItem extends TreeItem<FileItem> {
         return children;
     }
 
-    //重写叶子方法，如果该文件不是目录，则返回真
+    /**
+     * @return boolean
+     * @author Siwen Sun
+     * @date 2022/8/13 13:07
+     */
     @Override
     public boolean isLeaf() {
-
         return !file.isDirectory();
     }
 
     /**
-     * @return the file
+     * @return java.io.File
+     * @author Siwen Sun
+     * @date 2022/8/13 13:07
      */
     public File getFile() {
         return file;

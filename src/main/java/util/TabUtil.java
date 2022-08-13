@@ -16,6 +16,14 @@ public class TabUtil {
     private TabUtil() {
     }
 
+    /**
+     * 
+     * @author Siwen Sun
+     * @date 2022/8/13 13:07
+     * @param tabPane
+     * @param fileItem 
+     * @return javafx.scene.control.Tab
+     */
     public static Tab findTab(TabPane tabPane, FileItem fileItem) {
         ObservableList<Tab> tabs = tabPane.getTabs();
         for (Tab tab : tabs) {
@@ -27,6 +35,13 @@ public class TabUtil {
     }
 
 
+    /**
+     * 
+     * @author Siwen Sun
+     * @date 2022/8/13 13:07
+     * @param tabPane
+     * @param fileItem 
+     */
     public static void openFile(TabPane tabPane, FileItem fileItem) {
         Tab tab = TabUtil.findTab(tabPane, fileItem);
         if (tab != null) {
@@ -40,12 +55,18 @@ public class TabUtil {
         }
     }
 
+    /**
+     * 
+     * @author Siwen Sun
+     * @date 2022/8/13 13:07
+     * @param tabPane
+     * @param fileItem 
+     */
     private static void openNewTab(TabPane tabPane, FileItem fileItem) throws CannotOpenException {
         TextArea textArea;
         if (fileItem.getType() == FileItem.TEXT) {
             textArea = new TextArea();
             textArea.setText(FileUtil.readFile(fileItem.getFile()));
-            // 创建新的选项卡并选中
             Tab tab = new Tab();
             tab.setId(fileItem.getFile().getAbsolutePath());
             tab.setText(fileItem.getFileName());
@@ -63,6 +84,12 @@ public class TabUtil {
         } else throw new CannotOpenException("Cannot open this file");
     }
 
+    /**
+     * 
+     * @author Siwen Sun
+     * @date 2022/8/13 13:08
+     * @param finalTab 
+     */
     public static void close(Tab finalTab) {
         if (finalTab.getText().endsWith("*")) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
