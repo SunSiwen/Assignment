@@ -3,7 +3,6 @@ package application;
 import entities.FileItem;
 import entities.FileTreeItem;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -101,7 +100,7 @@ public class Main extends Application {
         primaryStage.setOnCloseRequest(event -> tabPane.getTabs().forEach(TabUtil::close));
 
         //open the directory in explorer
-        showInExplorer.setOnAction((ActionEvent t) -> Optional.ofNullable(treeView.getSelectionModel().getSelectedItem()).ifPresent(selectedItem -> {
+        showInExplorer.setOnAction(event-> Optional.ofNullable(treeView.getSelectionModel().getSelectedItem()).ifPresent(selectedItem -> {
             try {
                 Desktop.getDesktop().open(new File(selectedItem.getValue().getFile().getParent()));
             } catch (IOException e) {

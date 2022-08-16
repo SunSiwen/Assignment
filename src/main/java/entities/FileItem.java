@@ -31,7 +31,7 @@ public class FileItem {
     public FileItem(File file) {
         this.file = file;
         fileName = file.getName();
-        String suffix = getFileSuffix(fileName);
+        String suffix = getFileSuffix();
         type = BAD_FORMAT;
         if (contains(txtTypes, suffix))
             type = TEXT;
@@ -39,12 +39,11 @@ public class FileItem {
 
 
     /**
-     *
+     * @param types : file type
+     * @param suffix : file suffix
+     * @return boolean
      * @author Siwen Sun
      * @date 2022/8/13 13:06
-     * @param types
-     * @param suffix
-     * @return boolean
      */
     public boolean contains(String[] types, String suffix) {
         suffix = suffix.toLowerCase();
@@ -56,16 +55,14 @@ public class FileItem {
     }
 
     /**
-     *
+     * @return java.lang.String
      * @author Siwen Sun
      * @date 2022/8/13 13:06
-     * @param name: file name
-     * @return java.lang.String
      */
-    public String getFileSuffix(String name) {
-        int pos = name.lastIndexOf('.');
+    public String getFileSuffix() {
+        int pos = fileName.lastIndexOf('.');
         if (pos > 0)
-            return name.substring(pos + 1);
+            return fileName.substring(pos + 1);
         return "";
     }
 
