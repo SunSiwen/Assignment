@@ -26,7 +26,7 @@ public class FileTreeItem extends TreeItem<FileItem> {
         supplier = (File f) -> {
             if (((FileTreeItem) this.getParent()).getFile().equals(new File(Main.getPath()))) {
                 String name = FileUtil.getFileName(f);
-                if (name.equals("网络") || name.equals("家庭组")) {
+                if ("网络".equals(name) || "家庭组".equals(name)) {
                     return new File[0];
                 }
             }
@@ -35,9 +35,8 @@ public class FileTreeItem extends TreeItem<FileItem> {
     }
 
     /**
-     * @param file
-     * @param supplier
-     * @return null
+     * @param file : file
+     * @param supplier : functional interface
      * @author Siwen Sun
      * @date 2022/8/13 13:06
      */
